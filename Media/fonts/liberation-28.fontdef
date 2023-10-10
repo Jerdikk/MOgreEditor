@@ -1,0 +1,9 @@
+liberation-28
+ {
+     type         truetype
+     source         liberation.ttf
+     size         26
+     resolution    96
+	 character_spacer 6
+	code_points 0-2047
+ }

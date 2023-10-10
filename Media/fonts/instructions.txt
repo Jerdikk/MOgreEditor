@@ -1,0 +1,4 @@
+1) Load .fsp file in Font Studio 4.2
+2) Export to CEGUI format
+3) Use FontXML2fontdef on the imageset and png (no extension needed in command line), spacing of 0 is a good place to start
+4) erase .imageset and .font, only .png, .fontdef are needed to load, and .fsp to be able to adjust font later should be in p4

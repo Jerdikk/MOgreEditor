@@ -1,0 +1,9 @@
+gunny-rewritten-32
+ {
+     type         truetype
+     source         gunny-rewritten.ttf
+     size         32
+     resolution    96
+	 character_spacer 6
+	code_points 0-255 1025-1105
+ }

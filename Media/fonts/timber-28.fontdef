@@ -1,0 +1,9 @@
+timber-28
+ {
+     type         truetype
+     source         Ember-Timber-Medium.otf
+     size         28
+     resolution    96
+	 character_spacer 8
+	code_points 0-2047
+ }

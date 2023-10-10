@@ -1,0 +1,9 @@
+emberpro-36
+ {
+     type         truetype
+     source         Ember-Pro-Bold.otf
+     size         36
+     resolution    96
+	 character_spacer 32
+	code_points 0-2047
+ }

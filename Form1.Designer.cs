@@ -33,8 +33,9 @@
             // 
             // MOgreControl1
             // 
+            this.MOgreControl1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.MOgreControl1.Location = new System.Drawing.Point(21, 35);
-            this.MOgreControl1.Name = "MOgreControl11";
+            this.MOgreControl1.Name = "MOgreControl1";
             this.MOgreControl1.Point = new System.Drawing.Point(0, 0);
             this.MOgreControl1.Size = new System.Drawing.Size(800, 600);
             this.MOgreControl1.TabIndex = 0;

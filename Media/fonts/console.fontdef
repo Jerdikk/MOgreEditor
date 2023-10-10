@@ -1,0 +1,8 @@
+Console
+ {
+     type         truetype
+     source         console.ttf
+     size         36
+     resolution    60
+     code_points 33-255 1025-1105
+ }
