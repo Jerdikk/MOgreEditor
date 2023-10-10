@@ -52,7 +52,7 @@ namespace MOgreEditor
 
                 camera.AspectRatio = (float)viewport.ActualWidth / (float)viewport.ActualHeight;
 
-                ResourceGroupManager.Singleton.AddResourceLocation("Media/packs/Sinbad.zip", "Zip");
+                ResourceGroupManager.Singleton.AddResourceLocation("../../Media/packs/Sinbad.zip", "Zip");
                 ResourceGroupManager.Singleton.InitialiseAllResourceGroups();
                 Entity ent = sceneManager.CreateEntity("Sinbad.mesh");
                 SceneNode node = sceneManager.RootSceneNode.CreateChildSceneNode("Sinbad");
