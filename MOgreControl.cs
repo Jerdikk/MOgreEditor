@@ -15,8 +15,12 @@ namespace MOgreEditor
     public partial class MOgreControl : UserControl
     {
         public Point Point { get; set; }
+        public MouseButtons mouseButtons;
         public double width;
         public double height;
+        // public bool isMouseMoved;
+        public event EventHandler myMouseMoved;
+        public event EventHandler myMouseDown;
         public MOgreControl()
         {
             InitializeComponent();
@@ -27,6 +31,23 @@ namespace MOgreEditor
         private void UserControl1_MouseMove(object sender, MouseEventArgs e)
         {
             Point = e.Location;
+            myMouseMoved?.Invoke(this, e);
+        }
+
+        private void MOgreControl_MouseClick(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void MOgreControl_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void MOgreControl_MouseDown(object sender, MouseEventArgs e)
+        {
+            mouseButtons = e.Button;
+            myMouseDown?.Invoke(this, e);
         }
     }
 }

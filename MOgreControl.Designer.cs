@@ -36,6 +36,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Name = "MOgreControl";
             this.Size = new System.Drawing.Size(800, 600);
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.MOgreControl_MouseClick);
+            this.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.MOgreControl_MouseDoubleClick);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MOgreControl_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.UserControl1_MouseMove);
             this.ResumeLayout(false);
 

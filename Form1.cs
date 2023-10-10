@@ -60,7 +60,9 @@ namespace MOgreEditor
                 //node.ShowBoundingBox = true;
 
                 AxisAlignedBox axisAlignedBox = ent.BoundingBox;
-                
+
+                MOgreControl1.myMouseMoved += mouseMovedEvent;
+                MOgreControl1.myMouseDown += mouseDownEvent;
 
                 isRunning = true;
                 Thread thread = new Thread(Go);
@@ -69,6 +71,17 @@ namespace MOgreEditor
             }
 
         }
+
+        private void mouseDownEvent(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void mouseMovedEvent(object sender, EventArgs e)
+        {
+           // throw new NotImplementedException();
+        }
+              
 
         public void Go()
         {
