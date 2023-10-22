@@ -25,10 +25,21 @@ namespace MOgreEditor
         SceneNode cameraNode;
         Viewport viewport;
         bool isRunning;
+        EditorScene editorScene;
         public Form1()
         {
             InitializeComponent();
             IntPtr t = MOgreControl1.Handle;
+            
+
+
+            /*TreeNode rootNode = new TreeNode("Root");
+            // Добавляем новый дочерний узел к rootNode
+            rootNode.Nodes.Add(new TreeNode("Смартфоны"));
+            // Добавляем rootNode вместе с дочерними узлами в TreeView
+            treeView1.Nodes.Add(rootNode);
+            // Добавляем второй очерний узел к первому узлу в TreeView
+            treeView1.Nodes[0].Nodes.Add(new TreeNode("Планшеты"));*/
 
 
             root = new Root();
@@ -57,30 +68,34 @@ namespace MOgreEditor
 
                 ResourceGroupManager.Singleton.AddResourceLocation("../../Media/packs/Sinbad.zip", "Zip");
                 ResourceGroupManager.Singleton.InitialiseAllResourceGroups();
-                Entity ent = sceneManager.CreateEntity("Sinbad.mesh");
-                Entity ent1 = sceneManager.CreateEntity("Sinbad.mesh");
-                sinbadNode = sceneManager.RootSceneNode.CreateChildSceneNode("Sinbad");
-                sinbadNode.AttachObject(ent);
-/*                cameraNode = sinbadNode.CreateChildSceneNode();
-                cameraNode.Position = new Vector3(0, 0, 50);
-                cameraNode.LookAt(sinbadNode.Position, Node.TransformSpace.TS_WORLD);
-                
-                 
-                 mNode->setPosition(targetPos + rotateQuaternion * aroundPos);
-// quite sure you want the SceneNode to face the "targetPos"
-mNode->lookAt(targetPos, Node::TS_WORLD);
-// or
-mNode->setOrientation(aroundPos.getRotationTo(targetPos));
-                 */
+
+                editorScene = new EditorScene(treeView1,sceneManager);
 
 
-                SceneNode sinbadNode1 = sceneManager.RootSceneNode.CreateChildSceneNode("Sinbad1");
-                sinbadNode1.AttachObject(ent1);
+                sinbadNode = editorScene.AddEditorSceneNode("Sinbad", "Sinbad.mesh");
+                SceneNode sinbadNode1  = editorScene.AddEditorSceneNode("Sinbad1", "Sinbad.mesh");
+                // sinbadNode = sceneManager.RootSceneNode.CreateChildSceneNode("Sinbad");
+                // sinbadNode.AttachObject(ent);
+                /*                cameraNode = sinbadNode.CreateChildSceneNode();
+                                cameraNode.Position = new Vector3(0, 0, 50);
+                                cameraNode.LookAt(sinbadNode.Position, Node.TransformSpace.TS_WORLD);
+
+
+                                 mNode->setPosition(targetPos + rotateQuaternion * aroundPos);
+                // quite sure you want the SceneNode to face the "targetPos"
+                mNode->lookAt(targetPos, Node::TS_WORLD);
+                // or
+                mNode->setOrientation(aroundPos.getRotationTo(targetPos));
+                                 */
+
+
+                /*SceneNode sinbadNode1 = sceneManager.RootSceneNode.CreateChildSceneNode("Sinbad1");
+                sinbadNode1.AttachObject(ent1);*/
                 sinbadNode1.Position = new Vector3(10.0f, 2.0f, 3.0f);
 
                 //sinbadNode.ShowBoundingBox = true;
 
-                AxisAlignedBox axisAlignedBox = ent.BoundingBox;
+               // AxisAlignedBox axisAlignedBox = ent.BoundingBox;
 
                 MOgreControl1.myMouseMoved += mouseMovedEvent;
                 MOgreControl1.myMouseDown += mouseDownEvent;
@@ -136,7 +151,7 @@ mNode->setOrientation(aroundPos.getRotationTo(targetPos));
 
                    // camera.Position = cameraNode.Position;
                     camera.LookAt(sinbadNode.Position);
-                    Vector3 tt1 = new Vector3(0, 0, 50);        
+                    Vector3 tt1 = new Vector3(0, 0, -50);        
                     camera.Position = sinbadNode.Position + sinbadNode.Orientation * tt1;
 
 
@@ -150,6 +165,46 @@ mNode->setOrientation(aroundPos.getRotationTo(targetPos));
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             isRunning = false;
+        }
+
+        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            TreeNode treeNode = e.Node;
+            EditorSceneNode sceneNode1 = null;
+            try
+            {
+                if (treeNode != null)
+                {
+                    if (treeNode.Name != null)
+                    {
+                        bool found = false;
+                        foreach (EditorSceneNode sceneNode in editorScene.children)
+                        {
+                            sceneNode.sceneNode.ShowBoundingBox = false;
+                            if (sceneNode.name == treeNode.Text)
+                            {
+                                sceneNode1 = sceneNode;
+                                found = true;                                
+                            }
+                        }
+                        if (found)
+                        {
+                            sceneNode1.sceneNode.ShowBoundingBox = true;
+                            tbPosition.Text = sceneNode1.sceneNode.Position.ToString();
+                            tbRotation.Text = sceneNode1.sceneNode.Orientation.ToString();
+                        }
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
