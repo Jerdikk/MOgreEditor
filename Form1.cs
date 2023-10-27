@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Media.Imaging;
 using Mogre;
 
 
@@ -26,6 +27,10 @@ namespace MOgreEditor
         Viewport viewport;
         bool isRunning;
         EditorScene editorScene;
+        Vector3 currentObjectPosition;
+        Rotation currentObjectRotation;
+        SceneNode selectedObjectSceneNode;
+
         public Form1()
         {
             InitializeComponent();
@@ -73,29 +78,10 @@ namespace MOgreEditor
 
 
                 sinbadNode = editorScene.AddEditorSceneNode("Sinbad", "Sinbad.mesh");
-                SceneNode sinbadNode1  = editorScene.AddEditorSceneNode("Sinbad1", "Sinbad.mesh");
-                // sinbadNode = sceneManager.RootSceneNode.CreateChildSceneNode("Sinbad");
-                // sinbadNode.AttachObject(ent);
-                /*                cameraNode = sinbadNode.CreateChildSceneNode();
-                                cameraNode.Position = new Vector3(0, 0, 50);
-                                cameraNode.LookAt(sinbadNode.Position, Node.TransformSpace.TS_WORLD);
-
-
-                                 mNode->setPosition(targetPos + rotateQuaternion * aroundPos);
-                // quite sure you want the SceneNode to face the "targetPos"
-                mNode->lookAt(targetPos, Node::TS_WORLD);
-                // or
-                mNode->setOrientation(aroundPos.getRotationTo(targetPos));
-                                 */
-
-
-                /*SceneNode sinbadNode1 = sceneManager.RootSceneNode.CreateChildSceneNode("Sinbad1");
-                sinbadNode1.AttachObject(ent1);*/
-                sinbadNode1.Position = new Vector3(10.0f, 2.0f, 3.0f);
-
-                //sinbadNode.ShowBoundingBox = true;
-
-               // AxisAlignedBox axisAlignedBox = ent.BoundingBox;
+                sinbadNode  = editorScene.AddEditorSceneNode("Sinbad1", "Sinbad.mesh");
+             
+                editorScene.GetEditorSceneNodeByName("Sinbad1").Position = new Vector3(10.0f, 2.0f, 3.0f);
+              
 
                 MOgreControl1.myMouseMoved += mouseMovedEvent;
                 MOgreControl1.myMouseDown += mouseDownEvent;
@@ -110,7 +96,7 @@ namespace MOgreEditor
 
         private void mouseDownEvent(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+         //   throw new NotImplementedException();
         }
 
         private void mouseMovedEvent(object sender, EventArgs e)
@@ -123,12 +109,15 @@ namespace MOgreEditor
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
             long prev = stopwatch.ElapsedMilliseconds;
+            long prevGUI = stopwatch.ElapsedMilliseconds;
             long now = stopwatch.ElapsedMilliseconds;
             long delta;
+            long deltaGUI;
             while (root != null && isRunning)
             {
                 now = stopwatch.ElapsedMilliseconds;
                 delta = now - prev;
+                deltaGUI = now - prevGUI; 
                 if (delta > 16)
                 {
                     root.RenderOneFrame();
@@ -136,20 +125,17 @@ namespace MOgreEditor
                 }
                 else
                 {
-                    // sinbadNode.Yaw(new Radian(0.01f));
-                    //  sinbadNode.Pitch(new Radian(0.01f));
-                    /*Quaternion t1 = sinbadNode.Orientation;
-                    
-                    Matrix3 rotMatrix= t1.ToRotationMatrix();
-                    Radian mYaw;
-                    Radian mPitch;
-                    Radian mRoll;
-                    rotMatrix.ToEulerAnglesYXZ(out mYaw, out mPitch, out mRoll);*/
+                    if (deltaGUI > 500)
+                    {
+                        prevGUI = now;
+                        UpdateTextObject();
+                    }
+                   
+
                     Euler euler = new Euler(sinbadNode.Orientation);
                     euler.AddYaw(new Degree(0.1f));
                     sinbadNode.Orientation = euler.ToQuaternion();
-
-                   // camera.Position = cameraNode.Position;
+                   
                     camera.LookAt(sinbadNode.Position);
                     Vector3 tt1 = new Vector3(0, 0, -50);        
                     camera.Position = sinbadNode.Position + sinbadNode.Orientation * tt1;
@@ -189,9 +175,8 @@ namespace MOgreEditor
                         }
                         if (found)
                         {
-                            sceneNode1.sceneNode.ShowBoundingBox = true;
-                            tbPosition.Text = sceneNode1.sceneNode.Position.ToString();
-                            tbRotation.Text = sceneNode1.sceneNode.Orientation.ToString();
+                            selectedObjectSceneNode = sceneNode1.sceneNode;
+                            UpdateTextObject();
                         }
                     }
                 }
@@ -202,9 +187,54 @@ namespace MOgreEditor
             }
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void UpdateTextObject()
         {
+            try
+            {
+                if (selectedObjectSceneNode != null)
+                {
+                    selectedObjectSceneNode.ShowBoundingBox = true;
+                    tbPositionX.Invoke(new Action(() => tbPositionX.Text = selectedObjectSceneNode.Position.x.ToString()));
+                    tbPositionY.Invoke(new Action(() => tbPositionY.Text = selectedObjectSceneNode.Position.y.ToString()));
+                    tbPositionZ.Invoke(new Action(() => tbPositionZ.Text = selectedObjectSceneNode.Position.z.ToString()));
 
+                    Euler euler = new Euler(selectedObjectSceneNode.Orientation);
+
+                    tbYaw.Invoke(new Action(() => tbYaw.Text = euler.Yaw.ValueDegrees.ToString()));
+                    tbPitch.Invoke(new Action(() => tbPitch.Text = euler.Pitch.ValueDegrees.ToString()));                    
+                    tbRoll.Invoke(new Action(() => tbRoll.Text = euler.Roll.ValueDegrees.ToString()));
+                    
+                }
+            }
+            catch { }
         }
     }
 }
+
+// sinbadNode = sceneManager.RootSceneNode.CreateChildSceneNode("Sinbad");
+// sinbadNode.AttachObject(ent);
+/*                cameraNode = sinbadNode.CreateChildSceneNode();
+                cameraNode.Position = new Vector3(0, 0, 50);
+                cameraNode.LookAt(sinbadNode.Position, Node.TransformSpace.TS_WORLD);
+
+
+                 mNode->setPosition(targetPos + rotateQuaternion * aroundPos);
+// quite sure you want the SceneNode to face the "targetPos"
+mNode->lookAt(targetPos, Node::TS_WORLD);
+// or
+mNode->setOrientation(aroundPos.getRotationTo(targetPos));
+                 */
+
+
+/*SceneNode sinbadNode1 = sceneManager.RootSceneNode.CreateChildSceneNode("Sinbad1");
+sinbadNode1.AttachObject(ent1);*/
+
+// sinbadNode.Yaw(new Radian(0.01f));
+//  sinbadNode.Pitch(new Radian(0.01f));
+/*Quaternion t1 = sinbadNode.Orientation;
+
+Matrix3 rotMatrix= t1.ToRotationMatrix();
+Radian mYaw;
+Radian mPitch;
+Radian mRoll;
+rotMatrix.ToEulerAnglesYXZ(out mYaw, out mPitch, out mRoll);*/

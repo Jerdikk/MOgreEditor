@@ -42,6 +42,20 @@ namespace MOgreEditor
             this.rootSceneNode = sceneManager.RootSceneNode;
             this.sceneManager = sceneManager;
         }
+        public SceneNode GetEditorSceneNodeByName(string nodeName)
+        {
+            try {
+                foreach(EditorSceneNode node in children) 
+                {
+                    if (node.name == nodeName)
+                    {
+                        return node.sceneNode;
+                    }
+                }
+            }
+            catch { }
+            return null;
+        }
         public SceneNode AddEditorSceneNode(string nodeName, string v)
         {
             try
@@ -56,12 +70,12 @@ namespace MOgreEditor
                 editorSceneNode.entity = entity;
                 editorSceneNode.sceneNode = sceneNode;
                 editorSceneNode.treeNode = new TreeNode(nodeName);
-                this.children.AddLast(editorSceneNode);                
+                this.children.AddLast(editorSceneNode);
                 rootNode.Nodes.Add(editorSceneNode.treeNode);
 
                 return sceneNode;
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 return null;
             }

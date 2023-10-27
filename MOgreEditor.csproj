@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Euler.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
