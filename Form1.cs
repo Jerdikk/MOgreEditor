@@ -79,7 +79,8 @@ namespace MOgreEditor
 
                 sinbadNode = editorScene.AddEditorSceneNode("Sinbad", "Sinbad.mesh");
                 sinbadNode  = editorScene.AddEditorSceneNode("Sinbad1", "Sinbad.mesh");
-             
+                editorScene.AddEditorSceneNode("Camera", "Camera");
+
                 editorScene.GetEditorSceneNodeByName("Sinbad1").Position = new Vector3(10.0f, 2.0f, 3.0f);
               
 
@@ -128,7 +129,14 @@ namespace MOgreEditor
                     if (deltaGUI > 500)
                     {
                         prevGUI = now;
-                        UpdateTextObject();
+                        if (selectedObjectSceneNode != null)
+                        {
+                            UpdateTextObject(0);
+                        }
+                        else
+                        {
+                            UpdateTextObject(1);
+                        }
                     }
                    
 
@@ -176,7 +184,15 @@ namespace MOgreEditor
                         if (found)
                         {
                             selectedObjectSceneNode = sceneNode1.sceneNode;
-                            UpdateTextObject();
+                            UpdateTextObject(0);
+                        }
+                        else
+                        {
+                            if (treeNode.Text == "Camera")
+                            {
+                                selectedObjectSceneNode = null;
+                                UpdateTextObject(1);
+                            }
                         }
                     }
                 }
@@ -187,23 +203,43 @@ namespace MOgreEditor
             }
         }
 
-        private void UpdateTextObject()
+        private void UpdateTextObject(int v)
         {
             try
             {
-                if (selectedObjectSceneNode != null)
+                if (v == 0)
                 {
-                    selectedObjectSceneNode.ShowBoundingBox = true;
-                    tbPositionX.Invoke(new Action(() => tbPositionX.Text = selectedObjectSceneNode.Position.x.ToString()));
-                    tbPositionY.Invoke(new Action(() => tbPositionY.Text = selectedObjectSceneNode.Position.y.ToString()));
-                    tbPositionZ.Invoke(new Action(() => tbPositionZ.Text = selectedObjectSceneNode.Position.z.ToString()));
+                    if (selectedObjectSceneNode != null)
+                    {
+                        selectedObjectSceneNode.ShowBoundingBox = true;
+                        tbPositionX.Invoke(new Action(() => tbPositionX.Text = selectedObjectSceneNode.Position.x.ToString()));
+                        tbPositionY.Invoke(new Action(() => tbPositionY.Text = selectedObjectSceneNode.Position.y.ToString()));
+                        tbPositionZ.Invoke(new Action(() => tbPositionZ.Text = selectedObjectSceneNode.Position.z.ToString()));
 
-                    Euler euler = new Euler(selectedObjectSceneNode.Orientation);
+                        Euler euler = new Euler(selectedObjectSceneNode.Orientation);
 
-                    tbYaw.Invoke(new Action(() => tbYaw.Text = euler.Yaw.ValueDegrees.ToString()));
-                    tbPitch.Invoke(new Action(() => tbPitch.Text = euler.Pitch.ValueDegrees.ToString()));                    
-                    tbRoll.Invoke(new Action(() => tbRoll.Text = euler.Roll.ValueDegrees.ToString()));
-                    
+                        tbYaw.Invoke(new Action(() => tbYaw.Text = euler.Yaw.ValueDegrees.ToString()));
+                        tbPitch.Invoke(new Action(() => tbPitch.Text = euler.Pitch.ValueDegrees.ToString()));
+                        tbRoll.Invoke(new Action(() => tbRoll.Text = euler.Roll.ValueDegrees.ToString()));
+
+                    }
+                }
+                else if (v == 1)
+                {
+                    if ((editorScene!=null) &&(editorScene.camera!=null))
+                    {
+                        Camera camera = editorScene.camera;
+                        tbPositionX.Invoke(new Action(() => tbPositionX.Text = camera.Position.x.ToString()));
+                        tbPositionY.Invoke(new Action(() => tbPositionY.Text = camera.Position.y.ToString()));
+                        tbPositionZ.Invoke(new Action(() => tbPositionZ.Text = camera.Position.z.ToString()));
+
+                        Euler euler = new Euler(camera.Orientation);
+
+                        tbYaw.Invoke(new Action(() => tbYaw.Text = euler.Yaw.ValueDegrees.ToString()));
+                        tbPitch.Invoke(new Action(() => tbPitch.Text = euler.Pitch.ValueDegrees.ToString()));
+                        tbRoll.Invoke(new Action(() => tbRoll.Text = euler.Roll.ValueDegrees.ToString()));
+
+                    }
                 }
             }
             catch { }

@@ -1,4 +1,5 @@
 ﻿using Mogre;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,7 @@ namespace MOgreEditor
         public TreeNode rootNode;
         public SceneNode rootSceneNode;
         public SceneManager sceneManager;
+        public Camera camera;
 
         public EditorScene(TreeView treeView, SceneManager sceneManager)
         {
@@ -57,23 +59,39 @@ namespace MOgreEditor
             return null;
         }
         public SceneNode AddEditorSceneNode(string nodeName, string v)
-        {
+        {           
             try
             {
-                Entity entity = sceneManager.CreateEntity(v);
+                if (v != "Camera")
+                {
+                    Entity entity = sceneManager.CreateEntity(v);
 
-                SceneNode sceneNode = rootSceneNode.CreateChildSceneNode(nodeName);
-                sceneNode.AttachObject(entity);
-                EditorSceneNode editorSceneNode = new EditorSceneNode();
-                editorSceneNode.name = nodeName;
-                editorSceneNode.meshName = v;
-                editorSceneNode.entity = entity;
-                editorSceneNode.sceneNode = sceneNode;
-                editorSceneNode.treeNode = new TreeNode(nodeName);
-                this.children.AddLast(editorSceneNode);
-                rootNode.Nodes.Add(editorSceneNode.treeNode);
+                    SceneNode sceneNode = rootSceneNode.CreateChildSceneNode(nodeName);
+                    sceneNode.AttachObject(entity);
+                    EditorSceneNode editorSceneNode = new EditorSceneNode();
+                    editorSceneNode.name = nodeName;
+                    editorSceneNode.meshName = v;
+                    editorSceneNode.entity = entity;
+                    editorSceneNode.sceneNode = sceneNode;
+                    editorSceneNode.treeNode = new TreeNode(nodeName);
+                    this.children.AddLast(editorSceneNode);
+                    rootNode.Nodes.Add(editorSceneNode.treeNode);
 
-                return sceneNode;
+                    return sceneNode;
+                }
+                else
+                {
+                    EditorSceneNode editorSceneNode = new EditorSceneNode();
+                    editorSceneNode.name = nodeName;
+                    editorSceneNode.meshName = "Camera";
+                    editorSceneNode.entity = null;
+                    this.camera = sceneManager.GetCamera(nodeName);
+                    editorSceneNode.sceneNode = null;
+                    editorSceneNode.treeNode = new TreeNode(nodeName);
+                   // this.children.AddLast(editorSceneNode);
+                    rootNode.Nodes.Add(editorSceneNode.treeNode);
+                    return null;
+                }
             }
             catch (Exception ex)
             {
