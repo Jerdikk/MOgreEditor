@@ -2,16 +2,110 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 
 namespace MOgreEditor
 {
     [Serializable]
+    public class SaveSceneNode
+    {
+        public string name;
+        public string meshName;
+        public Vector3 position;
+        public Quaternion orientation;
+        public SaveSceneNode() { }
+    }
+    [Serializable]
+    public class SaveScene
+    {
+        public string cameraName;
+        public Vector3 cameraPosition;
+        public Vector3 cameraLookAt;
+        public Quaternion cameraOrientation;
+        public List<SaveSceneNode> nodes = new List<SaveSceneNode>();
+        public SaveScene()
+        {
+
+        }
+        public static bool ReadScene(string name, EditorScene editorScene)
+        {
+            try
+            {
+                SaveScene scene;
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(SaveScene));
+                using (FileStream fs = new FileStream(name, FileMode.OpenOrCreate))
+                {
+                    scene = (SaveScene)xmlSerializer.Deserialize(fs);
+                }
+
+                if (scene != null)
+                {
+                    editorScene.children.Clear();
+                    editorScene.treeView1.Nodes.Clear();
+                    editorScene.sceneManager.ClearScene();
+                    editorScene.camera = new Camera(scene.cameraName, editorScene.sceneManager);
+                    editorScene.camera.Position = scene.cameraPosition;
+                    editorScene.camera.Orientation = scene.cameraOrientation;
+                    editorScene.camera.Direction = scene.cameraLookAt;
+                    foreach(SaveSceneNode saveSceneNode in scene.nodes) 
+                    {
+                        EditorSceneNode editorSceneNode = new EditorSceneNode();
+                        SceneNode sceneNode  = editorScene.AddEditorSceneNode(saveSceneNode.name, saveSceneNode.meshName);
+                        sceneNode.Position = saveSceneNode.position;
+                        sceneNode.Orientation = saveSceneNode.orientation;
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public static void WriteScene(string name, EditorScene scene)
+        {
+            SaveScene saveScene;
+            try
+            {
+                saveScene = new SaveScene();
+                saveScene.cameraName = scene.camera.Name;
+                saveScene.cameraPosition = scene.camera.Position;
+                saveScene.cameraOrientation = scene.camera.Orientation;
+                saveScene.cameraLookAt = scene.camera.Direction;
+
+                foreach (EditorSceneNode node in scene.children)
+                {
+                    SaveSceneNode saveSceneNode = new SaveSceneNode();
+                    saveSceneNode.name = node.name;
+                    saveSceneNode.meshName = node.meshName;
+                    saveSceneNode.orientation = node.sceneNode.Orientation;
+                    saveSceneNode.position = node.sceneNode.Position;
+                    saveScene.nodes.Add(saveSceneNode);
+                }
+
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(SaveScene));
+                // получаем поток, куда будем записывать сериализованный объект
+                using (FileStream fs = new FileStream(name, FileMode.OpenOrCreate))
+                {
+                    xmlSerializer.Serialize(fs, saveScene);
+                }
+            }
+            catch { }
+        }
+    }
+
     public class EditorSceneNode
     {
+
         public Entity entity;
         public string name;
         public string meshName;
@@ -46,8 +140,9 @@ namespace MOgreEditor
         }
         public SceneNode GetEditorSceneNodeByName(string nodeName)
         {
-            try {
-                foreach(EditorSceneNode node in children) 
+            try
+            {
+                foreach (EditorSceneNode node in children)
                 {
                     if (node.name == nodeName)
                     {
@@ -59,7 +154,7 @@ namespace MOgreEditor
             return null;
         }
         public SceneNode AddEditorSceneNode(string nodeName, string v)
-        {           
+        {
             try
             {
                 if (v != "Camera")
@@ -88,7 +183,7 @@ namespace MOgreEditor
                     this.camera = sceneManager.GetCamera(nodeName);
                     editorSceneNode.sceneNode = null;
                     editorSceneNode.treeNode = new TreeNode(nodeName);
-                   // this.children.AddLast(editorSceneNode);
+                    // this.children.AddLast(editorSceneNode);
                     rootNode.Nodes.Add(editorSceneNode.treeNode);
                     return null;
                 }

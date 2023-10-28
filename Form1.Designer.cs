@@ -40,15 +40,15 @@
             this.LoadMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.tbPositionY = new System.Windows.Forms.TextBox();
             this.tbPositionZ = new System.Windows.Forms.TextBox();
+            this.tbPositionY = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.tbPitch = new System.Windows.Forms.TextBox();
             this.tbRoll = new System.Windows.Forms.TextBox();
+            this.tbPitch = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -126,20 +126,22 @@
             // NewMenuItem
             // 
             this.NewMenuItem.Name = "NewMenuItem";
-            this.NewMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.NewMenuItem.Size = new System.Drawing.Size(180, 22);
             this.NewMenuItem.Text = "Новый";
             // 
             // LoadMenuItem
             // 
             this.LoadMenuItem.Name = "LoadMenuItem";
-            this.LoadMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.LoadMenuItem.Size = new System.Drawing.Size(180, 22);
             this.LoadMenuItem.Text = "Загрузить";
+            this.LoadMenuItem.Click += new System.EventHandler(this.LoadMenuItem_Click);
             // 
             // SaveMenuItem
             // 
             this.SaveMenuItem.Name = "SaveMenuItem";
-            this.SaveMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.SaveMenuItem.Size = new System.Drawing.Size(180, 22);
             this.SaveMenuItem.Text = "Сохранить";
+            this.SaveMenuItem.Click += new System.EventHandler(this.SaveMenuItem_Click);
             // 
             // groupBox1
             // 
@@ -156,14 +158,19 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Позиция";
             // 
-            // label3
+            // tbPositionZ
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(10, 50);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(14, 13);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "Y";
+            this.tbPositionZ.Location = new System.Drawing.Point(30, 73);
+            this.tbPositionZ.Name = "tbPositionZ";
+            this.tbPositionZ.Size = new System.Drawing.Size(102, 20);
+            this.tbPositionZ.TabIndex = 8;
+            // 
+            // tbPositionY
+            // 
+            this.tbPositionY.Location = new System.Drawing.Point(30, 47);
+            this.tbPositionY.Name = "tbPositionY";
+            this.tbPositionY.Size = new System.Drawing.Size(102, 20);
+            this.tbPositionY.TabIndex = 7;
             // 
             // label4
             // 
@@ -174,19 +181,14 @@
             this.label4.TabIndex = 6;
             this.label4.Text = "Z";
             // 
-            // tbPositionY
+            // label3
             // 
-            this.tbPositionY.Location = new System.Drawing.Point(30, 47);
-            this.tbPositionY.Name = "tbPositionY";
-            this.tbPositionY.Size = new System.Drawing.Size(102, 20);
-            this.tbPositionY.TabIndex = 7;
-            // 
-            // tbPositionZ
-            // 
-            this.tbPositionZ.Location = new System.Drawing.Point(30, 73);
-            this.tbPositionZ.Name = "tbPositionZ";
-            this.tbPositionZ.Size = new System.Drawing.Size(102, 20);
-            this.tbPositionZ.TabIndex = 8;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(10, 50);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(14, 13);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "Y";
             // 
             // groupBox2
             // 
@@ -203,14 +205,19 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Вращение";
             // 
-            // label5
+            // tbRoll
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(7, 49);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(31, 13);
-            this.label5.TabIndex = 6;
-            this.label5.Text = "Pitch";
+            this.tbRoll.Location = new System.Drawing.Point(44, 70);
+            this.tbRoll.Name = "tbRoll";
+            this.tbRoll.Size = new System.Drawing.Size(114, 20);
+            this.tbRoll.TabIndex = 9;
+            // 
+            // tbPitch
+            // 
+            this.tbPitch.Location = new System.Drawing.Point(44, 45);
+            this.tbPitch.Name = "tbPitch";
+            this.tbPitch.Size = new System.Drawing.Size(114, 20);
+            this.tbPitch.TabIndex = 8;
             // 
             // label6
             // 
@@ -221,19 +228,14 @@
             this.label6.TabIndex = 7;
             this.label6.Text = "Roll";
             // 
-            // tbPitch
+            // label5
             // 
-            this.tbPitch.Location = new System.Drawing.Point(44, 45);
-            this.tbPitch.Name = "tbPitch";
-            this.tbPitch.Size = new System.Drawing.Size(114, 20);
-            this.tbPitch.TabIndex = 8;
-            // 
-            // tbRoll
-            // 
-            this.tbRoll.Location = new System.Drawing.Point(44, 70);
-            this.tbRoll.Name = "tbRoll";
-            this.tbRoll.Size = new System.Drawing.Size(114, 20);
-            this.tbRoll.TabIndex = 9;
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(7, 49);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(31, 13);
+            this.label5.TabIndex = 6;
+            this.label5.Text = "Pitch";
             // 
             // Form1
             // 

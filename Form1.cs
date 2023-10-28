@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
+
 using Mogre;
 
 
@@ -82,7 +83,9 @@ namespace MOgreEditor
                 editorScene.AddEditorSceneNode("Camera", "Camera");
 
                 editorScene.GetEditorSceneNodeByName("Sinbad1").Position = new Vector3(10.0f, 2.0f, 3.0f);
-              
+                
+                camera.Position = new Vector3(0, 0, -50);
+                camera.LookAt(editorScene.GetEditorSceneNodeByName("Sinbad1").Position);
 
                 MOgreControl1.myMouseMoved += mouseMovedEvent;
                 MOgreControl1.myMouseDown += mouseDownEvent;
@@ -139,7 +142,7 @@ namespace MOgreEditor
                         }
                     }
                    
-
+                    /*
                     Euler euler = new Euler(sinbadNode.Orientation);
                     euler.AddYaw(new Degree(0.1f));
                     sinbadNode.Orientation = euler.ToQuaternion();
@@ -147,7 +150,7 @@ namespace MOgreEditor
                     camera.LookAt(sinbadNode.Position);
                     Vector3 tt1 = new Vector3(0, 0, -50);        
                     camera.Position = sinbadNode.Position + sinbadNode.Orientation * tt1;
-
+                    */
 
                     Thread.Sleep(1);
                 }
@@ -243,6 +246,27 @@ namespace MOgreEditor
                 }
             }
             catch { }
+        }
+
+        private void SaveMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "XML files(*.xml)|*.xml|All files(*.*)|*.*";
+            if (saveFileDialog.ShowDialog()!=DialogResult.Cancel) 
+            {
+                SaveScene.WriteScene(saveFileDialog.FileName, editorScene);
+            }
+        }
+
+        private void LoadMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "XML files(*.xml)|*.xml|All files(*.*)|*.*";
+            if (openFileDialog.ShowDialog() != DialogResult.Cancel)
+            {
+                SaveScene.ReadScene(openFileDialog.FileName, editorScene);
+                selectedObjectSceneNode = null;
+            }
         }
     }
 }
