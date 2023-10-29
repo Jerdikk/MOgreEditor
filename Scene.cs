@@ -47,14 +47,15 @@ namespace MOgreEditor
 
                 if (scene != null)
                 {
-                    editorScene.children.Clear();
-                    editorScene.treeView1.Nodes.Clear();
+                    editorScene.children.Clear();                    
                     editorScene.sceneManager.ClearScene();
                     editorScene.camera = new Camera(scene.cameraName, editorScene.sceneManager);
+
                     editorScene.camera.Position = scene.cameraPosition;
                     editorScene.camera.Orientation = scene.cameraOrientation;
                     editorScene.camera.Direction = scene.cameraLookAt;
-                    foreach(SaveSceneNode saveSceneNode in scene.nodes) 
+                    editorScene.AddEditorSceneNode(scene.cameraName, "Camera");
+                    foreach (SaveSceneNode saveSceneNode in scene.nodes) 
                     {
                         EditorSceneNode editorSceneNode = new EditorSceneNode();
                         SceneNode sceneNode  = editorScene.AddEditorSceneNode(saveSceneNode.name, saveSceneNode.meshName);
@@ -137,6 +138,21 @@ namespace MOgreEditor
             treeView1.Nodes.Add(rootNode);
             this.rootSceneNode = sceneManager.RootSceneNode;
             this.sceneManager = sceneManager;
+        }
+        public void Dispose()
+        {
+            foreach(EditorSceneNode node in children)
+            {
+                node.entity.Dispose();
+                node.entity = null;
+                node.sceneNode.Dispose();
+                node.sceneNode = null;
+                node.treeNode.Remove();
+                node.treeNode = null;   
+            }
+            children.Clear();
+            camera.Dispose();
+            camera = null;
         }
         public SceneNode GetEditorSceneNodeByName(string nodeName)
         {

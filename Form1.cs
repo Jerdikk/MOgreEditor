@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 
 using Mogre;
+using MogreNewt.CollisionPrimitives;
 
 
 namespace MOgreEditor
@@ -74,6 +75,7 @@ namespace MOgreEditor
 
                 ResourceGroupManager.Singleton.AddResourceLocation("../../Media/packs/Sinbad.zip", "Zip");
                 ResourceGroupManager.Singleton.InitialiseAllResourceGroups();
+                
 
                 editorScene = new EditorScene(treeView1,sceneManager);
 
@@ -177,11 +179,14 @@ namespace MOgreEditor
                         bool found = false;
                         foreach (EditorSceneNode sceneNode in editorScene.children)
                         {
-                            sceneNode.sceneNode.ShowBoundingBox = false;
-                            if (sceneNode.name == treeNode.Text)
+                            if (sceneNode.sceneNode != null)
                             {
-                                sceneNode1 = sceneNode;
-                                found = true;                                
+                                sceneNode.sceneNode.ShowBoundingBox = false;
+                                if (sceneNode.name == treeNode.Text)
+                                {
+                                    sceneNode1 = sceneNode;
+                                    found = true;
+                                }
                             }
                         }
                         if (found)
@@ -260,13 +265,42 @@ namespace MOgreEditor
 
         private void LoadMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "XML files(*.xml)|*.xml|All files(*.*)|*.*";
-            if (openFileDialog.ShowDialog() != DialogResult.Cancel)
+            try
             {
-                SaveScene.ReadScene(openFileDialog.FileName, editorScene);
-                selectedObjectSceneNode = null;
+                editorScene.Dispose();
+                editorScene.treeView1.Nodes.Clear();
+                editorScene = new EditorScene(treeView1, sceneManager);
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "XML files(*.xml)|*.xml|All files(*.*)|*.*";
+                if (openFileDialog.ShowDialog() != DialogResult.Cancel)
+                {
+                    SaveScene.ReadScene(openFileDialog.FileName, editorScene);
+                    selectedObjectSceneNode = null;
+                }
             }
+            catch { }
+        }
+
+        private void NewMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                editorScene.Dispose();
+                editorScene.treeView1.Nodes.Clear();
+                editorScene = new EditorScene(treeView1, sceneManager);
+                selectedObjectSceneNode = null;
+                editorScene.children.Clear();
+                editorScene.sceneManager.ClearScene();
+                editorScene.camera = new Camera("Camera", editorScene.sceneManager);
+
+                editorScene.camera.Position = new Vector3(0,0,-50);
+                editorScene.camera.Orientation = new Quaternion(0,0,1,0);
+                editorScene.camera.Direction = new Vector3(0,0,0);
+                editorScene.AddEditorSceneNode("Camera", "Camera");
+
+            }
+            catch { }
+
         }
     }
 }
