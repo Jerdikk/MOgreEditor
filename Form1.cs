@@ -16,6 +16,7 @@ using Mogre;
 using MogreNewt.CollisionPrimitives;
 
 
+
 namespace MOgreEditor
 {
     public partial class Form1 : Form
@@ -32,6 +33,7 @@ namespace MOgreEditor
         Vector3 currentObjectPosition;
         Rotation currentObjectRotation;
         SceneNode selectedObjectSceneNode;
+        RaySceneQuery mRaySceneQuery;
 
         public Form1()
         {
@@ -92,6 +94,8 @@ namespace MOgreEditor
                 MOgreControl1.myMouseMoved += mouseMovedEvent;
                 MOgreControl1.myMouseDown += mouseDownEvent;
 
+                mRaySceneQuery = sceneManager.CreateRayQuery(new Ray());
+
                 isRunning = true;
                 Thread thread = new Thread(Go);
                 thread.Start();
@@ -102,7 +106,54 @@ namespace MOgreEditor
 
         private void mouseDownEvent(object sender, EventArgs e)
         {
-         //   throw new NotImplementedException();
+            int x1 = ((System.Windows.Forms.MouseEventArgs)e).X;
+            int y1 = ((System.Windows.Forms.MouseEventArgs)e).Y;
+            label7.Text = "X = "+x1.ToString()+" Y = "+y1.ToString();
+
+            // Setup the ray scene query
+            float screenX = x1 / (float)800;
+            float screenY = y1 / (float)600;
+            Ray mouseRay = camera.GetCameraToViewportRay(screenX, screenY);
+            mRaySceneQuery.Ray = mouseRay;
+
+            // Execute query
+            RaySceneQueryResult result = mRaySceneQuery.Execute();
+            RaySceneQueryResult.Enumerator itr = (RaySceneQueryResult.Enumerator)(result.GetEnumerator());
+
+            // Get results, create a node/entity on the position
+            if (itr != null && itr.MoveNext())
+            {
+
+                int yy = 1;
+
+                label8.Text = itr.Current.movable.ParentNode.Name;
+                label9.Text = ((Mogre.Entity)itr.Current.movable).MovableType;
+                label10.Text = itr.Current.movable.Name;
+                label11.Text = itr.Current.distance.ToString("F3");
+                ((Mogre.SceneNode)itr.Current.movable.ParentNode).ShowBoundingBox = !((Mogre.SceneNode)itr.Current.movable.ParentNode).ShowBoundingBox;
+
+
+                /*if (useCurrent)
+                {
+                    mCurrentObject.Position = itr.Current.worldFragment.singleIntersection;
+                }
+                else
+                {
+                    Entity ent = sceneMgr.CreateEntity(
+                                      "Robot" + mCount.ToString(), "robot.mesh");
+
+                    mCurrentObject = sceneMgr.RootSceneNode.CreateChildSceneNode(
+                        "RobotNode" + mCount.ToString(),
+                        itr.Current.worldFragment.singleIntersection);
+
+                    mCount++;
+                    mCurrentObject.AttachObject(ent);
+                    mCurrentObject.SetScale(0.1f, 0.1f, 0.1f);
+                }*/
+            }
+
+
+            //   throw new NotImplementedException();
         }
 
         private void mouseMovedEvent(object sender, EventArgs e)
