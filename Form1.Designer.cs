@@ -51,10 +51,10 @@
             this.label7 = new System.Windows.Forms.Label();
             this.MOgreControl1 = new MOgreEditor.MOgreControl();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -93,6 +93,7 @@
             this.tbPositionX.Name = "tbPositionX";
             this.tbPositionX.Size = new System.Drawing.Size(102, 20);
             this.tbPositionX.TabIndex = 4;
+            this.tbPositionX.TextChanged += new System.EventHandler(this.tbPositionX_TextChanged);
             // 
             // tbYaw
             // 
@@ -267,23 +268,14 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Выделено";
             // 
-            // label8
+            // label11
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(24, 24);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(35, 13);
-            this.label8.TabIndex = 0;
-            this.label8.Text = "label8";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(23, 46);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(35, 13);
-            this.label9.TabIndex = 1;
-            this.label9.Text = "label9";
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(26, 91);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(41, 13);
+            this.label11.TabIndex = 3;
+            this.label11.Text = "label11";
             // 
             // label10
             // 
@@ -294,14 +286,23 @@
             this.label10.TabIndex = 2;
             this.label10.Text = "label10";
             // 
-            // label11
+            // label9
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(26, 91);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(41, 13);
-            this.label11.TabIndex = 3;
-            this.label11.Text = "label11";
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(23, 46);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(35, 13);
+            this.label9.TabIndex = 1;
+            this.label9.Text = "label9";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(24, 24);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(35, 13);
+            this.label8.TabIndex = 0;
+            this.label8.Text = "label8";
             // 
             // Form1
             // 

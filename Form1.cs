@@ -39,7 +39,7 @@ namespace MOgreEditor
         {
             InitializeComponent();
             IntPtr t = MOgreControl1.Handle;
-            
+
 
 
             /*TreeNode rootNode = new TreeNode("Root");
@@ -77,17 +77,17 @@ namespace MOgreEditor
 
                 ResourceGroupManager.Singleton.AddResourceLocation("../../Media/packs/Sinbad.zip", "Zip");
                 ResourceGroupManager.Singleton.InitialiseAllResourceGroups();
-                
 
-                editorScene = new EditorScene(treeView1,sceneManager);
+
+                editorScene = new EditorScene(treeView1, sceneManager);
 
 
                 sinbadNode = editorScene.AddEditorSceneNode("Sinbad", "Sinbad.mesh");
-                sinbadNode  = editorScene.AddEditorSceneNode("Sinbad1", "Sinbad.mesh");
+                sinbadNode = editorScene.AddEditorSceneNode("Sinbad1", "Sinbad.mesh");
                 editorScene.AddEditorSceneNode("Camera", "Camera");
 
                 editorScene.GetEditorSceneNodeByName("Sinbad1").Position = new Vector3(10.0f, 2.0f, 3.0f);
-                
+
                 camera.Position = new Vector3(0, 0, -50);
                 camera.LookAt(editorScene.GetEditorSceneNodeByName("Sinbad1").Position);
 
@@ -108,7 +108,7 @@ namespace MOgreEditor
         {
             int x1 = ((System.Windows.Forms.MouseEventArgs)e).X;
             int y1 = ((System.Windows.Forms.MouseEventArgs)e).Y;
-            label7.Text = "X = "+x1.ToString()+" Y = "+y1.ToString();
+            label7.Text = "X = " + x1.ToString() + " Y = " + y1.ToString();
 
             // Setup the ray scene query
             float screenX = x1 / (float)800;
@@ -130,8 +130,11 @@ namespace MOgreEditor
                 label9.Text = ((Mogre.Entity)itr.Current.movable).MovableType;
                 label10.Text = itr.Current.movable.Name;
                 label11.Text = itr.Current.distance.ToString("F3");
-                ((Mogre.SceneNode)itr.Current.movable.ParentNode).ShowBoundingBox = !((Mogre.SceneNode)itr.Current.movable.ParentNode).ShowBoundingBox;
-
+               // ((Mogre.SceneNode)itr.Current.movable.ParentNode).ShowBoundingBox = !((Mogre.SceneNode)itr.Current.movable.ParentNode).ShowBoundingBox;
+                if (selectedObjectSceneNode != null)
+                    selectedObjectSceneNode.ShowBoundingBox = false;
+                selectedObjectSceneNode = (Mogre.SceneNode)itr.Current.movable.ParentNode;
+                
 
                 /*if (useCurrent)
                 {
@@ -174,7 +177,7 @@ namespace MOgreEditor
             {
                 now = stopwatch.ElapsedMilliseconds;
                 delta = now - prev;
-                deltaGUI = now - prevGUI; 
+                deltaGUI = now - prevGUI;
                 if (delta > 16)
                 {
                     root.RenderOneFrame();
@@ -194,7 +197,7 @@ namespace MOgreEditor
                             UpdateTextObject(1);
                         }
                     }
-                   
+
                     /*
                     Euler euler = new Euler(sinbadNode.Orientation);
                     euler.AddYaw(new Degree(0.1f));
@@ -285,7 +288,7 @@ namespace MOgreEditor
                 }
                 else if (v == 1)
                 {
-                    if ((editorScene!=null) &&(editorScene.camera!=null))
+                    if ((editorScene != null) && (editorScene.camera != null))
                     {
                         Camera camera = editorScene.camera;
                         tbPositionX.Invoke(new Action(() => tbPositionX.Text = camera.Position.x.ToString()));
@@ -308,7 +311,7 @@ namespace MOgreEditor
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "XML files(*.xml)|*.xml|All files(*.*)|*.*";
-            if (saveFileDialog.ShowDialog()!=DialogResult.Cancel) 
+            if (saveFileDialog.ShowDialog() != DialogResult.Cancel)
             {
                 SaveScene.WriteScene(saveFileDialog.FileName, editorScene);
             }
@@ -344,14 +347,29 @@ namespace MOgreEditor
                 editorScene.sceneManager.ClearScene();
                 editorScene.camera = new Camera("Camera", editorScene.sceneManager);
 
-                editorScene.camera.Position = new Vector3(0,0,-50);
-                editorScene.camera.Orientation = new Quaternion(0,0,1,0);
-                editorScene.camera.Direction = new Vector3(0,0,0);
+                editorScene.camera.Position = new Vector3(0, 0, -50);
+                editorScene.camera.Orientation = new Quaternion(0, 0, 1, 0);
+                editorScene.camera.Direction = new Vector3(0, 0, 0);
                 editorScene.AddEditorSceneNode("Camera", "Camera");
 
             }
             catch { }
 
+        }
+
+        private void tbPositionX_TextChanged(object sender, EventArgs e)
+        {
+            if (selectedObjectSceneNode != null)
+            {
+                Vector3 pos = selectedObjectSceneNode.Position;
+                float tx1;
+                bool t2 = float.TryParse(tbPositionX.Text, out tx1);
+                if (t2)
+                {
+                    Vector3 vector = new Vector3(tx1, pos.y, pos.z);
+                    selectedObjectSceneNode.Position = vector;
+                }
+            }
         }
     }
 }
