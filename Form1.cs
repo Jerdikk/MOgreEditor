@@ -130,11 +130,11 @@ namespace MOgreEditor
                 label9.Text = ((Mogre.Entity)itr.Current.movable).MovableType;
                 label10.Text = itr.Current.movable.Name;
                 label11.Text = itr.Current.distance.ToString("F3");
-               // ((Mogre.SceneNode)itr.Current.movable.ParentNode).ShowBoundingBox = !((Mogre.SceneNode)itr.Current.movable.ParentNode).ShowBoundingBox;
+                // ((Mogre.SceneNode)itr.Current.movable.ParentNode).ShowBoundingBox = !((Mogre.SceneNode)itr.Current.movable.ParentNode).ShowBoundingBox;
                 if (selectedObjectSceneNode != null)
                     selectedObjectSceneNode.ShowBoundingBox = false;
                 selectedObjectSceneNode = (Mogre.SceneNode)itr.Current.movable.ParentNode;
-                
+
 
                 /*if (useCurrent)
                 {
@@ -359,17 +359,59 @@ namespace MOgreEditor
 
         private void tbPositionX_TextChanged(object sender, EventArgs e)
         {
-            if (selectedObjectSceneNode != null)
+            try
             {
-                Vector3 pos = selectedObjectSceneNode.Position;
-                float tx1;
-                bool t2 = float.TryParse(tbPositionX.Text, out tx1);
-                if (t2)
+                if (selectedObjectSceneNode != null)
                 {
-                    Vector3 vector = new Vector3(tx1, pos.y, pos.z);
-                    selectedObjectSceneNode.Position = vector;
+                    Vector3 pos = selectedObjectSceneNode.Position;
+                    float tx1;
+                    bool t2 = float.TryParse(tbPositionX.Text, out tx1);
+                    if (t2)
+                    {
+                        Vector3 vector = new Vector3(tx1, pos.y, pos.z);
+                        selectedObjectSceneNode.Position = vector;
+                    }
                 }
             }
+            catch { }
+        }
+
+        private void tbPositionY_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (selectedObjectSceneNode != null)
+                {
+                    Vector3 pos = selectedObjectSceneNode.Position;
+                    float tx1;
+                    bool t2 = float.TryParse(tbPositionY.Text, out tx1);
+                    if (t2)
+                    {
+                        Vector3 vector = new Vector3(pos.x, tx1, pos.z);
+                        selectedObjectSceneNode.Position = vector;
+                    }
+                }
+            }
+            catch { }
+        }
+
+        private void tbPositionZ_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (selectedObjectSceneNode != null)
+                {
+                    Vector3 pos = selectedObjectSceneNode.Position;
+                    float tx1;
+                    bool t2 = float.TryParse(tbPositionZ.Text, out tx1);
+                    if (t2)
+                    {
+                        Vector3 vector = new Vector3(pos.x, pos.y, tx1);
+                        selectedObjectSceneNode.Position = vector;
+                    }
+                }
+            }
+            catch { }
         }
     }
 }

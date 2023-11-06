@@ -49,12 +49,12 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.MOgreControl1 = new MOgreEditor.MOgreControl();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.MOgreControl1 = new MOgreEditor.MOgreControl();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -164,6 +164,7 @@
             this.tbPositionZ.Name = "tbPositionZ";
             this.tbPositionZ.Size = new System.Drawing.Size(102, 20);
             this.tbPositionZ.TabIndex = 8;
+            this.tbPositionZ.TextChanged += new System.EventHandler(this.tbPositionZ_TextChanged);
             // 
             // tbPositionY
             // 
@@ -171,6 +172,7 @@
             this.tbPositionY.Name = "tbPositionY";
             this.tbPositionY.Size = new System.Drawing.Size(102, 20);
             this.tbPositionY.TabIndex = 7;
+            this.tbPositionY.TextChanged += new System.EventHandler(this.tbPositionY_TextChanged);
             // 
             // label4
             // 
@@ -246,15 +248,6 @@
             this.label7.TabIndex = 9;
             this.label7.Text = "label7";
             // 
-            // MOgreControl1
-            // 
-            this.MOgreControl1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.MOgreControl1.Location = new System.Drawing.Point(304, 34);
-            this.MOgreControl1.Name = "MOgreControl1";
-            this.MOgreControl1.Point = new System.Drawing.Point(0, 0);
-            this.MOgreControl1.Size = new System.Drawing.Size(800, 600);
-            this.MOgreControl1.TabIndex = 0;
-            // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.label11);
@@ -303,6 +296,15 @@
             this.label8.Size = new System.Drawing.Size(35, 13);
             this.label8.TabIndex = 0;
             this.label8.Text = "label8";
+            // 
+            // MOgreControl1
+            // 
+            this.MOgreControl1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.MOgreControl1.Location = new System.Drawing.Point(304, 34);
+            this.MOgreControl1.Name = "MOgreControl1";
+            this.MOgreControl1.Point = new System.Drawing.Point(0, 0);
+            this.MOgreControl1.Size = new System.Drawing.Size(800, 600);
+            this.MOgreControl1.TabIndex = 0;
             // 
             // Form1
             // 
