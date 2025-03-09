@@ -278,7 +278,7 @@ namespace MOgreEditor
                             {
                                 MovableObject movableObject1 = selectedObjectSceneNode.GetAttachedObject(0);
                                 int hfdgh = 1;
-                                label8.Text = movableObject1.ParentNode.Name;
+                                label8.Text = selectedObjectSceneNode.Name;
                                 label9.Text = ((Mogre.Entity)movableObject1).MovableType;
                                 label10.Text = movableObject1.Name;
                                 //label11.Text = itr.Current.distance.ToString("F3");
