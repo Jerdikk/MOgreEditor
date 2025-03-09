@@ -85,6 +85,7 @@ namespace MOgreEditor
 
                 sinbadNode = editorScene.AddEditorSceneNode("Sinbad", "Sinbad.mesh", "Entity");
                 sinbadNode = editorScene.AddEditorSceneNode("Sinbad1", "Sinbad.mesh", "Entity");
+                sinbadNode = editorScene.AddEditorSceneNode("Plane1", "Plane2", "Plane");
                 editorScene.AddEditorSceneNode("Camera", "Camera", "Camera");
 
                 editorScene.GetEditorSceneNodeByName("Sinbad1").Position = new Vector3(10.0f, 2.0f, 3.0f);

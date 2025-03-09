@@ -48,7 +48,7 @@ namespace MOgreEditor
 
                 if (scene != null)
                 {
-                    editorScene.children.Clear();                    
+                    editorScene.children.Clear();
                     editorScene.sceneManager.ClearScene();
                     editorScene.camera = new Camera(scene.cameraName, editorScene.sceneManager);
 
@@ -56,10 +56,10 @@ namespace MOgreEditor
                     editorScene.camera.Orientation = scene.cameraOrientation;
                     editorScene.camera.Direction = scene.cameraLookAt;
                     editorScene.AddEditorSceneNode(scene.cameraName, "Camera", "Camera");
-                    foreach (SaveSceneNode saveSceneNode in scene.nodes) 
+                    foreach (SaveSceneNode saveSceneNode in scene.nodes)
                     {
                         EditorSceneNode editorSceneNode = new EditorSceneNode();
-                        SceneNode sceneNode  = editorScene.AddEditorSceneNode(saveSceneNode.name, saveSceneNode.meshName,saveSceneNode.objType);
+                        SceneNode sceneNode = editorScene.AddEditorSceneNode(saveSceneNode.name, saveSceneNode.meshName, saveSceneNode.objType);
                         sceneNode.Position = saveSceneNode.position;
                         sceneNode.Orientation = saveSceneNode.orientation;
                     }
@@ -144,14 +144,14 @@ namespace MOgreEditor
         }
         public void Dispose()
         {
-            foreach(EditorSceneNode node in children)
+            foreach (EditorSceneNode node in children)
             {
                 node.entity.Dispose();
                 node.entity = null;
                 node.sceneNode.Dispose();
                 node.sceneNode = null;
                 node.treeNode.Remove();
-                node.treeNode = null;   
+                node.treeNode = null;
             }
             children.Clear();
             camera.Dispose();
@@ -193,6 +193,25 @@ namespace MOgreEditor
                     rootNode.Nodes.Add(editorSceneNode.treeNode);
 
                     return sceneNode;
+                }
+                if (objType == "Plane")
+                {
+                    Plane plane = new Plane(new Vector3(0, 1, 0), 0);
+
+                    MeshManager.Singleton.CreatePlane("ground", "General", plane, 2560, 2560, 20, 20, true, 1, 5, 5, new Vector3(0, 0, 1));
+                    Entity ent = this.sceneManager.CreateEntity("GroundEntity", "ground");
+                    SceneNode node = this.sceneManager.RootSceneNode.CreateChildSceneNode("GroundNode", new Vector3(640.0f, 0.0f, 640.0f));
+                    node.AttachObject(ent);
+                    ent.SetMaterialName("Examples/RustySteel");
+                    EditorSceneNode editorSceneNode = new EditorSceneNode();
+                    editorSceneNode.name = nodeName;
+                    editorSceneNode.meshName = ent.Name;
+                    editorSceneNode.objType = objType;
+                    editorSceneNode.entity = ent;
+                    editorSceneNode.sceneNode = node;
+                    editorSceneNode.treeNode = new TreeNode(nodeName);
+                    this.children.AddLast(editorSceneNode);
+                    rootNode.Nodes.Add(editorSceneNode.treeNode);
                 }
                 if (objType == "Camera")
                 {
