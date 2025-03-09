@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 
 using Mogre;
 using MogreNewt.CollisionPrimitives;
+//using Ogre;
 
 
 
@@ -126,14 +127,14 @@ namespace MOgreEditor
 
                 int yy = 1;
 
-                label8.Text = itr.Current.movable.ParentNode.Name;
-                label9.Text = ((Mogre.Entity)itr.Current.movable).MovableType;
-                label10.Text = itr.Current.movable.Name;
-                label11.Text = itr.Current.distance.ToString("F3");
                 // ((Mogre.SceneNode)itr.Current.movable.ParentNode).ShowBoundingBox = !((Mogre.SceneNode)itr.Current.movable.ParentNode).ShowBoundingBox;
                 if (selectedObjectSceneNode != null)
                     selectedObjectSceneNode.ShowBoundingBox = false;
                 selectedObjectSceneNode = (Mogre.SceneNode)itr.Current.movable.ParentNode;
+                UpdateTextObject(0);
+
+
+
 
 
                 /*if (useCurrent)
@@ -188,14 +189,7 @@ namespace MOgreEditor
                     if (deltaGUI > 500)
                     {
                         prevGUI = now;
-                        if (selectedObjectSceneNode != null)
-                        {
-                            UpdateTextObject(0);
-                        }
-                        else
-                        {
-                            UpdateTextObject(1);
-                        }
+
                     }
 
                     /*
@@ -252,6 +246,8 @@ namespace MOgreEditor
                         {
                             if (treeNode.Text == "Camera")
                             {
+                                if (selectedObjectSceneNode != null)
+                                    selectedObjectSceneNode.ShowBoundingBox = false;
                                 selectedObjectSceneNode = null;
                                 UpdateTextObject(1);
                             }
@@ -273,6 +269,37 @@ namespace MOgreEditor
                 {
                     if (selectedObjectSceneNode != null)
                     {
+                        ushort t1 = selectedObjectSceneNode.NumChildren();
+
+                        if (t1 == 0)
+                        {
+                            int yyyy1 = selectedObjectSceneNode.NumAttachedObjects();
+                            if (yyyy1 == 1)
+                            {
+                                MovableObject movableObject1 = selectedObjectSceneNode.GetAttachedObject(0);
+                                int hfdgh = 1;
+                                label8.Text = movableObject1.ParentNode.Name;
+                                label9.Text = ((Mogre.Entity)movableObject1).MovableType;
+                                label10.Text = movableObject1.Name;
+                                //label11.Text = itr.Current.distance.ToString("F3");
+                            }
+                            else
+                            {
+                                SceneNode.ObjectIterator ii = selectedObjectSceneNode.GetAttachedObjectIterator();
+                                int yyy1 = ii.Count<MovableObject>();
+                                while (ii.MoveNext())
+                                {
+                                    MovableObject movableObject = ii.Current;
+                                    string movableType = movableObject.MovableType;
+                                }
+                            }
+                            Node.ChildNodeIterator gg = selectedObjectSceneNode.GetChildIterator();
+                            Node hh = gg.Current;
+
+
+                        }
+
+
                         selectedObjectSceneNode.ShowBoundingBox = true;
                         tbPositionX.Invoke(new Action(() => tbPositionX.Text = selectedObjectSceneNode.Position.x.ToString()));
                         tbPositionY.Invoke(new Action(() => tbPositionY.Text = selectedObjectSceneNode.Position.y.ToString()));
@@ -361,17 +388,17 @@ namespace MOgreEditor
         {
             try
             {
-                if (selectedObjectSceneNode != null)
-                {
-                    Vector3 pos = selectedObjectSceneNode.Position;
-                    float tx1;
-                    bool t2 = float.TryParse(tbPositionX.Text, out tx1);
-                    if (t2)
-                    {
-                        Vector3 vector = new Vector3(tx1, pos.y, pos.z);
-                        selectedObjectSceneNode.Position = vector;
-                    }
-                }
+                /*  if (selectedObjectSceneNode != null)
+                  {
+                      Vector3 pos = selectedObjectSceneNode.Position;
+                      float tz1;
+                      bool t2 = float.TryParse(tbPositionX.Text, out tz1);
+                      if (t2)
+                      {
+                          Vector3 vector = new Vector3(tz1, pos.y, pos.z);
+                          selectedObjectSceneNode.Position = vector;
+                      }
+                  }*/
             }
             catch { }
         }
@@ -380,17 +407,17 @@ namespace MOgreEditor
         {
             try
             {
-                if (selectedObjectSceneNode != null)
-                {
-                    Vector3 pos = selectedObjectSceneNode.Position;
-                    float tx1;
-                    bool t2 = float.TryParse(tbPositionY.Text, out tx1);
-                    if (t2)
-                    {
-                        Vector3 vector = new Vector3(pos.x, tx1, pos.z);
-                        selectedObjectSceneNode.Position = vector;
-                    }
-                }
+                /*  if (selectedObjectSceneNode != null)
+                  {
+                      Vector3 pos = selectedObjectSceneNode.Position;
+                      float tz1;
+                      bool t2 = float.TryParse(tbPositionY.Text, out tz1);
+                      if (t2)
+                      {
+                          Vector3 vector = new Vector3(pos.x, tz1, pos.z);
+                          selectedObjectSceneNode.Position = vector;
+                      }
+                  }*/
             }
             catch { }
         }
@@ -399,19 +426,105 @@ namespace MOgreEditor
         {
             try
             {
-                if (selectedObjectSceneNode != null)
-                {
-                    Vector3 pos = selectedObjectSceneNode.Position;
-                    float tx1;
-                    bool t2 = float.TryParse(tbPositionZ.Text, out tx1);
-                    if (t2)
-                    {
-                        Vector3 vector = new Vector3(pos.x, pos.y, tx1);
-                        selectedObjectSceneNode.Position = vector;
-                    }
-                }
+                /* if (selectedObjectSceneNode != null)
+                 {
+                     Vector3 pos = selectedObjectSceneNode.Position;
+                     float tz1;
+                     bool t2 = float.TryParse(tbPositionZ.Text, out tz1);
+                     if (t2)
+                     {
+                         Vector3 vector = new Vector3(pos.x, pos.y, tz1);
+                         selectedObjectSceneNode.Position = vector;
+                     }
+                 }*/
             }
             catch { }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (selectedObjectSceneNode != null)
+            {
+                UpdateTextObject(0);
+            }
+            else
+            {
+                UpdateTextObject(1);
+            }
+
+
+            /*  if ((editorScene != null) && (editorScene.camera != null))
+              {
+                  Camera camera = editorScene.camera;
+                  tbPositionX.Invoke(new Action(() => tbPositionX.Text = camera.Position.x.ToString()));
+                  tbPositionY.Invoke(new Action(() => tbPositionY.Text = camera.Position.y.ToString()));
+                  tbPositionZ.Invoke(new Action(() => tbPositionZ.Text = camera.Position.z.ToString()));
+
+                  Euler euler = new Euler(camera.Orientation);
+
+                  tbYaw.Invoke(new Action(() => tbYaw.Text = euler.Yaw.ValueDegrees.ToString()));
+                  tbPitch.Invoke(new Action(() => tbPitch.Text = euler.Pitch.ValueDegrees.ToString()));
+                  tbRoll.Invoke(new Action(() => tbRoll.Text = euler.Roll.ValueDegrees.ToString()));
+
+              }*/
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (selectedObjectSceneNode != null)
+            {
+                // Vector3 pos = selectedObjectSceneNode.Position;
+                float tz1;
+                float ty1;
+                float tx1;
+                bool t2 = float.TryParse(tbPositionZ.Text, out tz1);
+                t2 &= float.TryParse(tbPositionX.Text, out tx1);
+                t2 &= float.TryParse(tbPositionY.Text, out ty1);
+                if (t2)
+                {
+                    Vector3 vector = new Vector3(tx1, ty1, tz1);
+                    selectedObjectSceneNode.Position = vector;
+                }
+                t2 = float.TryParse(tbPitch.Text, out tz1);
+                t2 &= float.TryParse(tbYaw.Text, out tx1);
+                t2 &= float.TryParse(tbRoll.Text, out ty1);
+                if (t2)
+                {
+                    selectedObjectSceneNode.Yaw(new Radian(new Degree(tx1)));
+                    selectedObjectSceneNode.Pitch(new Radian(new Degree(tz1)));
+                    selectedObjectSceneNode.Roll(new Radian(new Degree(ty1)));
+                }
+            }
+            else
+            {
+                int hh = 1;
+                if ((editorScene != null) && (editorScene.camera != null))
+                {
+                    // Vector3 pos = selectedObjectSceneNode.Position;
+                    float tz1;
+                    float ty1;
+                    float tx1;
+                    bool t2 = float.TryParse(tbPositionZ.Text, out tz1);
+                    t2 &= float.TryParse(tbPositionX.Text, out tx1);
+                    t2 &= float.TryParse(tbPositionY.Text, out ty1);
+                    if (t2)
+                    {
+                        Vector3 vector = new Vector3(tx1, ty1, tz1);
+                        editorScene.camera.Position = vector;
+                    }
+                    // editorScene.camera.
+                    t2 = float.TryParse(tbPitch.Text, out tz1);
+                    t2 &= float.TryParse(tbYaw.Text, out tx1);
+                    t2 &= float.TryParse(tbRoll.Text, out ty1);
+                    if (t2)
+                    {
+                        editorScene.camera.Yaw(new Radian(new Degree(tx1)));
+                        editorScene.camera.Pitch(new Radian(new Degree(tz1)));
+                        editorScene.camera.Roll(new Radian(new Degree(ty1)));
+                    }
+
+                }
+            }
         }
     }
 }
