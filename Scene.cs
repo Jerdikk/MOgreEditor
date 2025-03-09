@@ -18,6 +18,7 @@ namespace MOgreEditor
     {
         public string name;
         public string meshName;
+        public string objType;
         public Vector3 position;
         public Quaternion orientation;
         public SaveSceneNode() { }
@@ -54,11 +55,11 @@ namespace MOgreEditor
                     editorScene.camera.Position = scene.cameraPosition;
                     editorScene.camera.Orientation = scene.cameraOrientation;
                     editorScene.camera.Direction = scene.cameraLookAt;
-                    editorScene.AddEditorSceneNode(scene.cameraName, "Camera");
+                    editorScene.AddEditorSceneNode(scene.cameraName, "Camera", "Camera");
                     foreach (SaveSceneNode saveSceneNode in scene.nodes) 
                     {
                         EditorSceneNode editorSceneNode = new EditorSceneNode();
-                        SceneNode sceneNode  = editorScene.AddEditorSceneNode(saveSceneNode.name, saveSceneNode.meshName);
+                        SceneNode sceneNode  = editorScene.AddEditorSceneNode(saveSceneNode.name, saveSceneNode.meshName,saveSceneNode.objType);
                         sceneNode.Position = saveSceneNode.position;
                         sceneNode.Orientation = saveSceneNode.orientation;
                     }
@@ -87,6 +88,7 @@ namespace MOgreEditor
                 {
                     SaveSceneNode saveSceneNode = new SaveSceneNode();
                     saveSceneNode.name = node.name;
+                    saveSceneNode.objType = node.objType;
                     saveSceneNode.meshName = node.meshName;
                     saveSceneNode.orientation = node.sceneNode.Orientation;
                     saveSceneNode.position = node.sceneNode.Position;
@@ -109,6 +111,7 @@ namespace MOgreEditor
 
         public Entity entity;
         public string name;
+        public string objType;
         public string meshName;
         public SceneNode sceneNode;
         public TreeNode treeNode;
@@ -169,11 +172,11 @@ namespace MOgreEditor
             catch { }
             return null;
         }
-        public SceneNode AddEditorSceneNode(string nodeName, string v)
+        public SceneNode AddEditorSceneNode(string nodeName, string v, string objType)
         {
             try
             {
-                if (v != "Camera")
+                if (objType == "Entity")
                 {
                     Entity entity = sceneManager.CreateEntity(v);
 
@@ -182,6 +185,7 @@ namespace MOgreEditor
                     EditorSceneNode editorSceneNode = new EditorSceneNode();
                     editorSceneNode.name = nodeName;
                     editorSceneNode.meshName = v;
+                    editorSceneNode.objType = objType;
                     editorSceneNode.entity = entity;
                     editorSceneNode.sceneNode = sceneNode;
                     editorSceneNode.treeNode = new TreeNode(nodeName);
@@ -190,11 +194,12 @@ namespace MOgreEditor
 
                     return sceneNode;
                 }
-                else
+                if (objType == "Camera")
                 {
                     EditorSceneNode editorSceneNode = new EditorSceneNode();
                     editorSceneNode.name = nodeName;
                     editorSceneNode.meshName = "Camera";
+                    editorSceneNode.objType = objType;
                     editorSceneNode.entity = null;
                     this.camera = sceneManager.GetCamera(nodeName);
                     editorSceneNode.sceneNode = null;
@@ -203,12 +208,21 @@ namespace MOgreEditor
                     rootNode.Nodes.Add(editorSceneNode.treeNode);
                     return null;
                 }
+                return null;
             }
             catch (Exception ex)
             {
                 return null;
             }
         }
+
+        /*Plane plane = new Plane(new Vector3(0, 1, 0), 0);
+
+        MeshManager.getSingleton().createPlane("ground", "General", plane, 2560, 2560, 20, 20, true, 1, 5, 5, new Vector3(0, 0, 1));
+            Entity ent = scnMgr.createEntity("GroundEntity", "ground");
+        SceneNode node = scnMgr.getRootSceneNode().createChildSceneNode("GroundNode", new Vector3(640.0f, 0.0f, 640.0f));
+        node.attachObject(ent);
+            ent.setMaterialName("Examples/RustySteel");*/
     }
 
 }

@@ -83,9 +83,9 @@ namespace MOgreEditor
                 editorScene = new EditorScene(treeView1, sceneManager);
 
 
-                sinbadNode = editorScene.AddEditorSceneNode("Sinbad", "Sinbad.mesh");
-                sinbadNode = editorScene.AddEditorSceneNode("Sinbad1", "Sinbad.mesh");
-                editorScene.AddEditorSceneNode("Camera", "Camera");
+                sinbadNode = editorScene.AddEditorSceneNode("Sinbad", "Sinbad.mesh", "Entity");
+                sinbadNode = editorScene.AddEditorSceneNode("Sinbad1", "Sinbad.mesh", "Entity");
+                editorScene.AddEditorSceneNode("Camera", "Camera", "Camera");
 
                 editorScene.GetEditorSceneNodeByName("Sinbad1").Position = new Vector3(10.0f, 2.0f, 3.0f);
 
@@ -377,7 +377,7 @@ namespace MOgreEditor
                 editorScene.camera.Position = new Vector3(0, 0, -50);
                 editorScene.camera.Orientation = new Quaternion(0, 0, 1, 0);
                 editorScene.camera.Direction = new Vector3(0, 0, 0);
-                editorScene.AddEditorSceneNode("Camera", "Camera");
+                editorScene.AddEditorSceneNode("Camera", "Camera", "Camera");
 
             }
             catch { }
